@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import uuid from 'uuid';
+import PropTypes from 'prop-types';
+
 
 class AddProject extends Component {
   constructor(){
@@ -17,10 +20,11 @@ class AddProject extends Component {
       alert('title is none');
     } else{
       this.setState({newProject:{
-        title: this.refs.title.valuwé,
+        id: uuid.v4(),
+        title: this.refs.title.value,
         category: this.refs.category.value
       }}, function(){
-        console.log(this.state);
+        this.props.addProject(this.state.newProject);
       });
     }
     e.preventDefault();
@@ -28,7 +32,7 @@ class AddProject extends Component {
 
   render() {
     let categoryOptions = this.props.categories.map(category => {
-      return <option key={category} value="category">{category}</option>
+      return <option key={category} value={category}>{category}</option>
     });
 
     return (
@@ -45,11 +49,17 @@ class AddProject extends Component {
               {categoryOptions}
             </select>
           </div>
+          <br />
           <input type="submit" value="Submit" />
         </form>
       </div>
     );
   }
+}
+
+AddProject.propTypes = {
+  categories: PropTypes.array,
+  addProject: PropTypes.func
 }
 
 export default AddProject;
